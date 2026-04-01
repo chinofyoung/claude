@@ -56,14 +56,19 @@ function install() {
 
   // Check installed version
   if (!isForce && fs.existsSync(versionFile)) {
-    const installedVersion = fs.readFileSync(versionFile, "utf-8").trim();
-    if (installedVersion === currentVersion) {
-      console.log(`\n  claude-github-skills v${currentVersion} is already up to date.\n`);
-      console.log("  Use --force to reinstall.\n");
-      return;
+    try {
+      const installedVersion = fs.readFileSync(versionFile, "utf-8").trim();
+      if (installedVersion === currentVersion) {
+        console.log(`\n  claude-github-skills v${currentVersion} is already up to date.\n`);
+        console.log("  Use --force to reinstall.\n");
+        return;
+      }
+      console.log(`\n  claude-github-skills installer\n`);
+      console.log(`  Updating from v${installedVersion} to v${currentVersion}\n`);
+    } catch {
+      console.log("\n  claude-github-skills installer\n");
+      console.log(`  Installing v${currentVersion} to: ${targetBase}\n`);
     }
-    console.log(`\n  claude-github-skills installer\n`);
-    console.log(`  Updating from v${installedVersion} to v${currentVersion}\n`);
   } else {
     console.log("\n  claude-github-skills installer\n");
     console.log(`  Installing v${currentVersion} to: ${targetBase}\n`);
