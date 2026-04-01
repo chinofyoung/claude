@@ -1,6 +1,6 @@
 {
   "name": "claude-github-skills",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "GitHub-focused skills for Claude Code: work on issues, review PRs, fix PR feedback",
   "bin": {
     "claude-github-skills": "bin/install.js"
