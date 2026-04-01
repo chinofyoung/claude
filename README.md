@@ -30,7 +30,7 @@ Project-local install copies commands to `.claude/commands/gh/` in your current 
 1. Install the skills: `npx claude-github-skills@latest`
 2. Open your project in Claude Code
 3. Run `/gh:setup` to scope the skills to your repository
-4. Start using `/gh:work`, `/gh:review-pr`, or `/gh:fix-pr`
+4. Start using `/gh:work`, `/gh:review-pr`, `/gh:fix-pr`, or `/gh:list`
 
 ## Commands
 
@@ -84,6 +84,23 @@ What it does:
 7. For PRs with 15+ changed files, prioritizes core logic, largest diffs, and new files
 8. Optionally offers to run Playwright for visual regression checks on UI changes (only if Playwright is in the project)
 
+### `/gh:list [priority]` — List issues by priority
+
+Displays all open issues sorted by priority (critical → high → medium → low), with optional filtering.
+
+```
+/gh:list
+/gh:list critical
+```
+
+What it does:
+1. Reads project scope from `CLAUDE.md`
+2. Fetches open issues with priority labels (`priority:critical`, `priority:high`, `priority:medium`, `priority:low`)
+3. Groups and displays them in priority order with a formatted table (issue number, title, assignees, created date)
+4. Shows a summary count at the end
+5. Supports filtering to a single priority level — `/gh:list high` shows only high-priority issues
+6. Shows a helpful error for invalid priority arguments
+
 ### `/gh:fix-pr <pr#>` — Fix review feedback
 
 Reads all review comments on a PR and addresses each one.
@@ -121,7 +138,8 @@ claude-github-skills/
 │       ├── setup.md        # /gh:setup skill definition
 │       ├── work.md         # /gh:work skill definition
 │       ├── review-pr.md    # /gh:review-pr skill definition
-│       └── fix-pr.md       # /gh:fix-pr skill definition
+│       ├── fix-pr.md       # /gh:fix-pr skill definition
+│       └── list.md         # /gh:list skill definition
 ├── package.json
 └── README.md
 ```
