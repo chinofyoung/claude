@@ -1,5 +1,8 @@
 # claude-github-skills
 
+[![npm version](https://img.shields.io/npm/v/claude-github-skills)](https://www.npmjs.com/package/claude-github-skills)
+[![license](https://img.shields.io/npm/l/claude-github-skills)](https://github.com/chinofyoung/claude/blob/main/LICENSE)
+
 GitHub-focused skills for Claude Code. Work on issues, review PRs, and fix review feedback — all scoped to a single project.
 
 ## Install
@@ -136,6 +139,12 @@ rm -rf .claude/commands/gh
 ```
 
 And optionally remove the `<!-- gh-skills-start -->` to `<!-- gh-skills-end -->` block from your project's `CLAUDE.md`.
+
+## Links
+
+- [npm package](https://www.npmjs.com/package/claude-github-skills)
+- [GitHub repository](https://github.com/chinofyoung/claude)
+- [Report issues](https://github.com/chinofyoung/claude/issues)
 
 ## License
 
