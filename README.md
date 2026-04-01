@@ -30,7 +30,7 @@ Project-local install copies commands to `.claude/commands/gh/` in your current 
 1. Install the skills: `npx claude-github-skills@latest`
 2. Open your project in Claude Code
 3. Run `/gh:setup` to scope the skills to your repository
-4. Start using `/gh:work`, `/gh:review-pr`, `/gh:fix-pr`, or `/gh:list`
+4. Start using `/gh:work`, `/gh:review-pr`, `/gh:fix-pr`, `/gh:create-ticket`, or `/gh:list`
 
 ## Commands
 
@@ -83,6 +83,22 @@ What it does:
 6. Approves the PR if no issues are found
 7. For PRs with 15+ changed files, prioritizes core logic, largest diffs, and new files
 8. Optionally offers to run Playwright for visual regression checks on UI changes (only if Playwright is in the project)
+
+### `/gh:create-ticket <prompt>` — Create a structured issue
+
+Turns a natural language prompt into a well-structured, dev-ready GitHub issue.
+
+```
+/gh:create-ticket Add a /list command that shows issues by priority
+```
+
+What it does:
+1. Reads the project scope from `CLAUDE.md`
+2. Parses the prompt to understand the feature or task
+3. Explores the codebase for relevant files, functions, and patterns
+4. Generates a structured issue with summary, context, code references, and acceptance criteria
+5. Previews the issue and waits for your approval before creating it
+6. Files the issue via `gh issue create` with optional labels
 
 ### `/gh:list [priority]` — List issues by priority
 
@@ -139,6 +155,7 @@ claude-github-skills/
 │       ├── work.md         # /gh:work skill definition
 │       ├── review-pr.md    # /gh:review-pr skill definition
 │       ├── fix-pr.md       # /gh:fix-pr skill definition
+│       ├── create-ticket.md # /gh:create-ticket skill definition
 │       └── list.md         # /gh:list skill definition
 ├── package.json
 └── README.md
