@@ -1,0 +1,28 @@
+{
+  "name": "claude-github-skills",
+  "version": "1.0.0",
+  "description": "GitHub-focused skills for Claude Code: work on issues, review PRs, fix PR feedback",
+  "bin": {
+    "claude-github-skills": "bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "commands/"
+  ],
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "github",
+    "skills",
+    "pr-review",
+    "issue-workflow"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
