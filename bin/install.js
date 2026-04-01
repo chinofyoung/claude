@@ -87,6 +87,7 @@ function install() {
   console.log("    /gh:review-pr <#> - Review a pull request");
   console.log("    /gh:fix-pr <#>  - Fix PR review feedback");
   console.log("    /gh:create-ticket <prompt> - Create a structured issue");
+  console.log("    /gh:list [priority] - List issues by priority");
   console.log("\n  Prerequisites:");
   console.log("    - GitHub CLI (gh) installed and authenticated");
   console.log("    - Run /gh:setup in your project first\n");
