@@ -31,8 +31,6 @@ Read `CLAUDE.md` in the project root. Look for the `<!-- gh-skills-start -->` bl
 
 If the block is missing, tell the user to run `/gh:setup` first and stop.
 
-Also note the `gh` CLI path if specified (e.g., `/c/Program Files/GitHub CLI/gh.exe`). Fall back to `gh` if not specified.
-
 ## Step 2: Parse the prompt
 
 Read the user's prompt from `$ARGUMENTS`. Identify:
