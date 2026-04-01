@@ -20,8 +20,16 @@
     "pr-review",
     "issue-workflow"
   ],
-  "author": "",
+  "author": "chinofyoung",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chinofyoung/claude.git"
+  },
+  "homepage": "https://github.com/chinofyoung/claude#readme",
+  "bugs": {
+    "url": "https://github.com/chinofyoung/claude/issues"
+  },
   "engines": {
     "node": ">=18.0.0"
   }
