@@ -59,8 +59,7 @@ function uninstall(args) {
   console.log("  you may want to remove it manually.\n");
 }
 
-function install() {
-  const args = process.argv.slice(2);
+function install(args) {
   const isForce = args.includes("--force");
 
   const targetBase = getTargetBase(args);
@@ -121,5 +120,5 @@ const args = process.argv.slice(2);
 if (args.includes("--uninstall")) {
   uninstall(args);
 } else {
-  install();
+  install(args);
 }
