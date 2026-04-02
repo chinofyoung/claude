@@ -38,16 +38,47 @@ function copyDirRecursive(src, dest) {
   }
 }
 
-function install() {
+function getTargetBase(args) {
   const isLocal = args.includes("--local");
+  if (isLocal) {
+    return path.join(process.cwd(), ".claude");
+  }
+  return getClaudeHome();
+}
+
+function uninstall(args) {
+  const targetBase = getTargetBase(args);
+  const commandsDest = path.join(targetBase, COMMANDS_DIR);
+
+  console.log("\n  claude-github-skills uninstaller\n");
+
+  if (!fs.existsSync(commandsDest)) {
+    console.log("  No installation found at:", commandsDest);
+    console.log("  Nothing to uninstall.\n");
+    return;
+  }
+
+  try {
+    log("Removing directory:", commandsDest);
+    fs.rmSync(commandsDest, { recursive: true, force: true });
+  } catch (err) {
+    console.error(`\n  Uninstall failed: ${err.message}`);
+    log("Stack trace:", err.stack);
+    process.exit(1);
+  }
+
+  console.log("  Removed:", commandsDest);
+  console.log("\n  Uninstall complete!");
+  console.log(
+    "\n  Note: If you added a <!-- gh-skills-start --> block to your CLAUDE.md,"
+  );
+  console.log("  you may want to remove it manually.\n");
+}
+
+function install(args) {
   const isForce = args.includes("--force");
 
-  let targetBase;
-  if (isLocal) {
-    targetBase = path.join(process.cwd(), ".claude");
-  } else {
-    targetBase = getClaudeHome();
-  }
+  const targetBase = getTargetBase(args);
 
   const packageRoot = path.resolve(__dirname, "..");
   const commandsSrc = path.join(packageRoot, COMMANDS_DIR);
@@ -121,4 +152,8 @@ function install() {
   console.log("    - Run /gh:setup in your project first\n");
 }
 
-install();
+if (args.includes("--uninstall")) {
+  uninstall(args);
+} else {
+  install(args);
+}
