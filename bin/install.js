@@ -5,12 +5,20 @@ const path = require("path");
 
 const COMMANDS_DIR = "commands/gh";
 
+const args = process.argv.slice(2);
+const verbose = args.includes("--verbose");
+
+function log(...msg) {
+  if (verbose) console.log("  [verbose]", ...msg);
+}
+
 function getClaudeHome() {
   const home = process.env.HOME || process.env.USERPROFILE;
   return path.join(home, ".claude");
 }
 
 function copyDirRecursive(src, dest) {
+  log("Creating directory:", dest);
   if (!fs.existsSync(dest)) {
     fs.mkdirSync(dest, { recursive: true });
   }
@@ -23,6 +31,7 @@ function copyDirRecursive(src, dest) {
     if (entry.isDirectory()) {
       copyDirRecursive(srcPath, destPath);
     } else {
+      log(`Copying: ${srcPath} -> ${destPath}`);
       fs.copyFileSync(srcPath, destPath);
       console.log(`  Copied: ${entry.name}`);
     }
@@ -49,7 +58,14 @@ function uninstall(args) {
     return;
   }
 
-  fs.rmSync(commandsDest, { recursive: true, force: true });
+  try {
+    log("Removing directory:", commandsDest);
+    fs.rmSync(commandsDest, { recursive: true, force: true });
+  } catch (err) {
+    console.error(`\n  Uninstall failed: ${err.message}`);
+    log("Stack trace:", err.stack);
+    process.exit(1);
+  }
 
   console.log("  Removed:", commandsDest);
   console.log("\n  Uninstall complete!");
@@ -70,9 +86,18 @@ function install(args) {
   const versionFile = path.join(commandsDest, ".version");
 
   if (!fs.existsSync(commandsSrc)) {
-    console.error("Error: commands directory not found at", commandsSrc);
+    console.error(
+      `\n  Installation failed: source commands directory not found.\n` +
+      `  Expected location: ${commandsSrc}\n\n` +
+      `  This usually means the package was not downloaded correctly.\n` +
+      `  Try reinstalling the package and running this command again.\n`
+    );
     process.exit(1);
   }
+
+  log("Package root:", packageRoot);
+  log("Source:", commandsSrc);
+  log("Destination:", commandsDest);
 
   const pkg = require(path.join(packageRoot, "package.json"));
   const currentVersion = pkg.version;
@@ -97,11 +122,22 @@ function install(args) {
     console.log(`  Installing v${currentVersion} to: ${targetBase}\n`);
   }
 
-  console.log("  Installing commands...");
-  copyDirRecursive(commandsSrc, commandsDest);
+  try {
+    console.log("  Installing commands...");
+    copyDirRecursive(commandsSrc, commandsDest);
 
-  // Write version file
-  fs.writeFileSync(versionFile, currentVersion, "utf-8");
+    // Write version file
+    fs.writeFileSync(versionFile, currentVersion, "utf-8");
+  } catch (err) {
+    console.error(`\n  Installation failed: ${err.message}`);
+    if (err.code === "EACCES" || err.code === "EPERM") {
+      console.error("  Check that you have write permissions to:", targetBase);
+    } else if (err.code === "ENOSPC") {
+      console.error("  Disk is full. Free up space and try again.");
+    }
+    log("Stack trace:", err.stack);
+    process.exit(1);
+  }
 
   console.log("\n  Installation complete!");
   console.log("\n  Available commands:");
@@ -116,7 +152,6 @@ function install(args) {
   console.log("    - Run /gh:setup in your project first\n");
 }
 
-const args = process.argv.slice(2);
 if (args.includes("--uninstall")) {
   uninstall(args);
 } else {
