@@ -2,4 +2,11 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+# Environment and secrets
 .env
+.env.*
+!.env.example
+credentials.json
+secrets.json
+*.pem
+*.key
